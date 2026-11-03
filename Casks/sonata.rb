@@ -1,20 +1,15 @@
 cask "sonata" do
-  version "0.1.2"
-  sha256 "83ad1d1b7e8f7184a50a55a5e512a44a9e3ed0e75ce39bbc43aa8479d0404b12"
+  version "0.1.3"
+  sha256 "134520ea376ae89ec89a45dcf243e90ed6b55f998bce7e81e67781bcf9f706f8"
 
   url "https://github.com/lgalabru/sonata/releases/download/v#{version}/Sonata-#{version}.zip"
   name "Sonata"
   desc "Solana leader schedule and validator earnings in the menu bar"
   homepage "https://github.com/lgalabru/sonata"
 
-  depends_on macos: ">= :sequoia"
+  depends_on macos: :sequoia
 
   app "Sonata.app"
-
-  # This build is signed ad hoc, not notarized: clear the download quarantine so it opens.
-  postflight do
-    system_command "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "#{appdir}/Sonata.app"]
-  end
 
   uninstall quit: "dev.sonata.Sonata"
 
@@ -22,4 +17,9 @@ cask "sonata" do
     "~/Library/Caches/sonata",
     "~/Library/Preferences/dev.sonata.Sonata.plist",
   ]
+
+  caveats <<~EOS
+    This build of Sonata is signed ad hoc, not notarized. If macOS won't open it,
+    allow it once in System Settings → Privacy & Security → Open Anyway.
+  EOS
 end
